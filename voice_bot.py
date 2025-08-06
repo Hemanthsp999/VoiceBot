@@ -1,32 +1,55 @@
-# from langchain_google_genai import ChatGoogleGenerativeAI
 import io
 import librosa
 from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import PromptTemplate
-# from langchain_core.messages import SystemMessage, HumanMessage
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
 import whisper
 
-# doesn't require any rag. just a voice bot
-prompt_template = """
-                You are a helpful AI Assitant. Your task is to give answers for the {voiceInput}.
-                Think throughly before giving any answers.
-                ***Important Note***: Don't get halucinate or give any halucinate answers
+prompt = """
+{history}
+You are LilBot, a helpful AI voice assistant designed to provide accurate, conversational responses to spoken queries.
+
+## Core Instructions:
+- Respond to the user's voice input: "{input}"
+- Provide concise, clear answers optimized for audio delivery
+- Use natural, conversational language that sounds good when spoken aloud
+- Keep responses between 1-3 sentences unless more detail is specifically requested
+
+## Tone:
+- Friendly and approachable
+- Professional but conversational
+
 """
 
 
 class VoiceBot:
     def __init__(self):
-
+        # Load whisper model
         self.whisper_model = whisper.load_model("tiny")
-        self.llm_model = OllamaLLM(
-            model="tinyllama:1.1b",
+
+        # LLM model from Ollama
+        self.llm_model = OllamaLLM(model="llama3.2:1b")
+
+        # Prompt template expecting 'input' and 'history'
+        self.prompt = PromptTemplate.from_template(
+            template=prompt
         )
 
-        self.prompt = PromptTemplate.from_template(
-            template=prompt_template
+        # Memory that tracks conversation history
+        self.memory = ConversationBufferMemory(memory_key="history", input_key="input")
+
+        # Use ConversationChain to automatically handle 'history'
+        self.chain = ConversationChain(
+            llm=self.llm_model,
+            prompt=self.prompt,
+            memory=self.memory,
+            input_key="input",
+            verbose=True
         )
 
     def processVoice(self, input):
+        # Read bytes from audio input
         audio_stream = io.BytesIO(input["bytes"])
         audio_np, sr = librosa.load(audio_stream, sr=16000)
         print(f"Debug sample rate: {sr}")
@@ -34,10 +57,9 @@ class VoiceBot:
         print(f"Debug Transcribe text: {result['text']}")
         return result["text"]
 
-    def bot(self, voiceInput):
+    def inputVoice(self, voiceInput):
         userInput = self.processVoice(voiceInput)
-        # make chain of prompt to llm
-        chain = self.prompt | self.llm_model
+        # Pass input as dictionary — 'history' is handled automatically
+        response = self.chain.invoke({"input": userInput})
+        return response["response"]
 
-        response = chain.invoke(userInput)
-        return str(response)
