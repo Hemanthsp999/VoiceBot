@@ -34,13 +34,13 @@ cd "project_dir"
 3. create Environment
 
 ```bash
-    python3 -m venv env
+python3 -m venv env
 ```
 
 4. Activate Enviornment
 
 ```bash
-    source env/bin/activate
+source env/bin/activate
 ```
 
 5. Install dependencies using requirements.txt
