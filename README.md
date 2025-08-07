@@ -11,13 +11,11 @@ LilBot: voice bot
 
 # API keys:
 
-    Get api key from Google AI studio.<br/>
+    Get api key from Google AI studio.
     Paste it in ".env" file at root of directory
 
     .env file:
-    ```bash
     API_KEY = "your_api_key_here"
-    ```
 
 # How to install and run the project ?
 
