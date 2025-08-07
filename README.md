@@ -2,12 +2,12 @@ LilBot: voice bot
 
 # Tech Stack
 
-Frontend: Streamlit
-Backend: Python
-LLM model: Gemini-2.0-flash
-AI Frameworks: LangChain
-STT (speech-to-text) model: Openai-whisper
-TTS (text-to-speech) model: gTTS(Google text-to-speech)
+Frontend: Streamlit <br/>
+Backend: Python <br/>
+LLM model: Gemini-2.0-flash<br/>
+AI Frameworks: LangChain<br/>
+STT (speech-to-text) model: Openai-whisper<br/>
+TTS (text-to-speech) model: gTTS(Google text-to-speech)<br/>
 
 # How to run the project ?
 
