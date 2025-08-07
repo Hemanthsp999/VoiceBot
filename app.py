@@ -1,13 +1,19 @@
-import pyttsx3
+# import pyttsx3
+import io
+import base64
+from gtts import gTTS
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from voice_bot import VoiceBot
 import time
+import streamlit.components.v1 as components
 
 voice_bot = VoiceBot()
+'''
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+'''
 
 # Session state for chat history
 if "history" not in st.session_state:
@@ -33,7 +39,15 @@ if input:
 
     # Get bot text response
     bot_response = voice_bot.inputVoice(input)
-    response = pyttsx3.speak(bot_response)
+    # response = pyttsx3.speak(bot_response)
+    response = gTTS(bot_response)
+    mp3_f = io.BytesIO()
+    response.write_to_fp(mp3_f)
+    mp3_f.seek(0)
+
+    mp_3_bytes = mp3_f.read()
+    b64 = base64.b64encode(mp_3_bytes).decode()
+
     print(f"Debug: {response}")
     end = time.perf_counter()
 
@@ -45,6 +59,23 @@ if input:
     st.audio(input["bytes"], format="audio/wav")
 
     st.markdown("### Bot Response (Text)")
+
+    components.html(
+        f"""
+    <html>
+    <body>
+        <script>
+            var audio = new Audio("data:audio/mp3;base64,{b64}");
+            audio.play().catch(error => {{
+                console.warn("Autoplay failed:", error);
+                setTimeout(() => audio.play(), 500);
+            }});
+        </script>
+    </body>
+    </html>
+    """,
+        height=0,
+    )
     st.write(bot_response)
 
     st.markdown("### Bot Response (Audio)")
