@@ -54,3 +54,6 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
+
+# Demo video: 
+["Demo Video"](demo/demo_video.webm)
