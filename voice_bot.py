@@ -1,13 +1,21 @@
 import io
+import os
+from dotenv import load_dotenv
 import librosa
-from langchain_ollama.llms import OllamaLLM
+# from langchain_ollama.llms import OllamaLLM
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 import whisper
 
+load_dotenv()
+
+api = os.getenv("API_KEY")
+
 prompt = """
 {history}
+
 You are LilBot, a helpful AI voice assistant designed to provide accurate, conversational responses to spoken queries.
 
 ## Core Instructions:
@@ -29,7 +37,14 @@ class VoiceBot:
         self.whisper_model = whisper.load_model("tiny")
 
         # LLM model from Ollama
-        self.llm_model = OllamaLLM(model="llama3.2:1b")
+        self.llm_model = ChatGoogleGenerativeAI(
+            model="gemini-2.0-flash-001",
+            google_api_key=api,
+            temperature="0.5",
+            max_tokens=None,
+            timeout=None,
+            max_retries=5
+        )
 
         # Prompt template expecting 'input' and 'history'
         self.prompt = PromptTemplate.from_template(
