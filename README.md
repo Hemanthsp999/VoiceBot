@@ -56,4 +56,4 @@ streamlit run app.py
 ```
 
 # Demo video: 
-["Demo Video"](demo/demo_video.webm)
+![Demo Video](demo/demo_video.webm)
