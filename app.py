@@ -15,7 +15,7 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Title
-st.markdown("<h1 style='text-align: center;'>LilBot: Voice Bot </h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>LilBot: AI voice bot</h1>", unsafe_allow_html=True)
 
 # Sidebar - Chat history
 with st.sidebar:
