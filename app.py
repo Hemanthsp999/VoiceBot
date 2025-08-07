@@ -1,4 +1,3 @@
-# import pyttsx3
 import io
 import base64
 from gtts import gTTS
@@ -8,12 +7,8 @@ from voice_bot import VoiceBot
 import time
 import streamlit.components.v1 as components
 
-voice_bot = VoiceBot()
-'''
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-'''
+if "voice_bot" not in st.session_state:
+    st.session_state.voice_bot = VoiceBot()
 
 # Session state for chat history
 if "history" not in st.session_state:
@@ -38,7 +33,7 @@ if input:
     start = time.perf_counter()
 
     # Get bot text response
-    bot_response = voice_bot.inputVoice(input)
+    bot_response = st.session_state.voice_bot.inputVoice(input)
     # response = pyttsx3.speak(bot_response)
     response = gTTS(bot_response)
     mp3_f = io.BytesIO()
@@ -54,11 +49,11 @@ if input:
     # Save to chat history
     st.session_state.history.append((user_input, bot_response))
 
-    # Display sections
-    st.markdown("### Your Audio")
-    st.audio(input["bytes"], format="audio/wav")
+    # User Audio if needed
+    # st.markdown("### Your Audio")
+    # st.audio(input["bytes"], format="audio/wav")
 
-    st.markdown("### Bot Response (Text)")
+    st.markdown("### Bot Response")
 
     components.html(
         f"""
@@ -78,9 +73,7 @@ if input:
     )
     st.write(bot_response)
 
-    st.markdown("### Bot Response (Audio)")
-
-    st.markdown(f"🕒 **Response Time:** {end - start:.2f}s")
+    st.markdown(f"**Response Time:** {end - start:.2f}s")
 else:
     st.markdown("Click the mic icon above to speak!")
 

@@ -2,7 +2,6 @@ import io
 import os
 from dotenv import load_dotenv
 import librosa
-# from langchain_ollama.llms import OllamaLLM
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import ConversationChain
@@ -74,7 +73,6 @@ class VoiceBot:
 
     def inputVoice(self, voiceInput):
         userInput = self.processVoice(voiceInput)
-        # Pass input as dictionary — 'history' is handled automatically
         response = self.chain.invoke({"input": userInput})
         return response["response"]
 
