@@ -3,13 +3,23 @@ LilBot: voice bot
 # Tech Stack
 
     1. Frontend: Streamlit
-    2. Backend: Python 
+    2. Backend: Python
     3. LLM model: Gemini-2.0-flash
     4. AI Frameworks: LangChain
     5. STT (speech-to-text) model: Openai-whisper
     6. TTS (text-to-speech) model: gTTS(Google text-to-speech)
 
-# How to run the project ?
+# API keys:
+
+    Get api key from Google AI studio.<br/>
+    Paste it in ".env" file at root of directory
+
+    .env file:
+    ```bash
+    API_KEY = "your_api_key_here"
+    ```
+
+# How to install and run the project ?
 
 1. Clone the Project
 
@@ -21,21 +31,27 @@ git clone "project_repo_url"
 
 ```bash
 cd "project_dir"
+```
 
-create Environment
+3. create Environment
+
+```bash
     python3 -m venv env
+```
 
-Activate Enviornment
+4. Activate Enviornment
+
+```bash
     source env/bin/activate
 ```
 
-3. Install dependencies using requirements.txt
+5. Install dependencies using requirements.txt
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run the model
+6. Run the model
 
 ```bash
 streamlit run app.py
