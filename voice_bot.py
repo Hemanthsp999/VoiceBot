@@ -35,7 +35,7 @@ class VoiceBot:
         # Load whisper model
         self.whisper_model = whisper.load_model("tiny")
 
-        # LLM model from Ollama
+        # LLM model from Gemini
         self.llm_model = ChatGoogleGenerativeAI(
             model="gemini-2.0-flash-001",
             google_api_key=api,
@@ -45,12 +45,10 @@ class VoiceBot:
             max_retries=5
         )
 
-        # Prompt template expecting 'input' and 'history'
         self.prompt = PromptTemplate.from_template(
             template=prompt
         )
 
-        # Memory that tracks conversation history
         self.memory = ConversationBufferMemory(memory_key="history", input_key="input")
 
         # Use ConversationChain to automatically handle 'history'
